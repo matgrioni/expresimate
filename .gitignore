@@ -1,0 +1,5 @@
+# Ignore compiled files.
+*.out
+
+# Ignore temporary vim files.
+*.*.swp
