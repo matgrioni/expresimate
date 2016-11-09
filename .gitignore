@@ -1,5 +1,8 @@
-# Ignore compiled files.
+# Ignore compiled files (including files without extensions).
 *.out
+*
+!*/
+!*.*
 
 # Ignore temporary vim files.
 *.*.swp
