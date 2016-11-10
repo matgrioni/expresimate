@@ -36,9 +36,9 @@ class BinaryTree
 template <class T>
 BinaryTree<T>::BinaryTree()
 {
-    parent_ = NULL;
-    left_ = NULL;
-    right_ = NULL;
+    parent_ = nullptr;
+    left_ = nullptr;
+    right_ = nullptr;
 }
 
 template <class T>
@@ -48,7 +48,7 @@ BinaryTree<T>::BinaryTree(T node, BinaryTree<T>* left, BinaryTree<T>* right)
     left_ = left;
     right_ = right;
 
-    parent_ = NULL;
+    parent_ = nullptr;
 }
 
 template <class T>
@@ -92,13 +92,13 @@ int BinaryTree<T>::size()
 {
     int s = 0;
 
-    if (node != NULL)
+    if (node != nullptr)
         s += 1;
 
-    if (left != NULL)
+    if (left != nullptr)
         left_->size();
 
-    if (right != NULL)
+    if (right != nullptr)
         right_->size();
 
     return s;
