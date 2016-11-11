@@ -66,6 +66,7 @@ T BinaryTree<T>::node()
 template <class T>
 void BinaryTree<T>::left(BinaryTree<T> *tree)
 {
+    tree->parent_ = this;
     left_ = tree;
 }
 
@@ -78,6 +79,7 @@ BinaryTree<T> BinaryTree<T>::left()
 template <class T>
 void BinaryTree<T>::right(BinaryTree<T> *tree)
 {
+    tree->parent_ = this;
     right_ = tree;
 }
 
