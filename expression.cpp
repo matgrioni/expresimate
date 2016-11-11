@@ -32,6 +32,31 @@ void Expression::parse_(std::string expr, BinaryTree<std::string> &tree)
 
     int opIndex = -1;
     for (int i = 0; i < 3; i++)
+    {
         if (ops[i] > -1)
+        {
             opIndex = ops[i];
+            break;
+        }
+    }
+
+    if (opIndex > -1)
+    {
+        char op = expr.at(opIndex);
+        tree.node(std::string(1, op));
+
+        BinaryTree<std::string> left, right;
+        std::string lhs = expr.substr(0, opIndex);
+        std::string rhs = expr.substr(opIndex + 1);
+
+        parse_(lhs, left);
+        parse_(rhs, right);
+
+        tree.left(&left);
+        tree.right(&right);
+    }
+    else
+    {
+        tree.node(expr);
+    }
 }
