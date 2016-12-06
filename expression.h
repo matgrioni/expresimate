@@ -13,11 +13,17 @@ class Expression
 {
     public:
         Expression(std::string expr);
+        ~Expression();
+
+        double eval();
+
+        std::string expr();
 
     private:
-        void parse_(std::string expr, BinaryTree<std::string> &tree);
+        double eval_helper(BinaryTree<std::string>* tree);
+        void parse_(std::string expr, BinaryTree<std::string>* tree);
 
-        BinaryTree<std::string> tree_;
+        BinaryTree<std::string> *tree_;
         std::string expr_;
 };
 

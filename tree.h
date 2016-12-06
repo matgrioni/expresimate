@@ -1,6 +1,8 @@
 #ifndef TREE_H
 #define TREE_H
 
+#include <iostream>
+
 /*********************************************************************
 *
 * A BinaryTree of non-NULL nodes. Uses generic types and therefore can
@@ -14,17 +16,18 @@ class BinaryTree
     public:
         BinaryTree();
         BinaryTree(T node, BinaryTree<T> *left, BinaryTree<T> *right);
+        ~BinaryTree();
 
         void node(T node);
         T node();
 
         void left(BinaryTree<T> *tree);
-        BinaryTree<T> left();
+        BinaryTree<T>* left();
 
         void right(BinaryTree<T> *tree);
-        BinaryTree<T> right();
+        BinaryTree<T>* right();
 
-        int size();
+        int height();
 
     private:
         T node_;
@@ -52,6 +55,16 @@ BinaryTree<T>::BinaryTree(T node, BinaryTree<T>* left, BinaryTree<T>* right)
 }
 
 template <class T>
+BinaryTree<T>::~BinaryTree()
+{
+    if (left_)
+        delete left_;
+
+    if (right_)
+        delete right_;
+}
+
+template <class T>
 void BinaryTree<T>::node(T node)
 {
     node_ = node;
@@ -71,9 +84,9 @@ void BinaryTree<T>::left(BinaryTree<T> *tree)
 }
 
 template <class T>
-BinaryTree<T> BinaryTree<T>::left()
+BinaryTree<T>* BinaryTree<T>::left()
 {
-    return *left_;
+    return left_;
 }
 
 template <class T>
@@ -84,26 +97,23 @@ void BinaryTree<T>::right(BinaryTree<T> *tree)
 }
 
 template <class T>
-BinaryTree<T> BinaryTree<T>::right()
+BinaryTree<T>* BinaryTree<T>::right()
 {
-    return *right_;
+    return right_;
 }
 
 template <class T>
-int BinaryTree<T>::size()
+int BinaryTree<T>::height()
 {
-    int s = 0;
+    int h = 0;
 
-    if (node != nullptr)
-        s += 1;
+    if (left_)
+        h += 1 + left_->height();
 
-    if (left != nullptr)
-        left_->size();
+    if (right_)
+        h += 1 + right_->height();
 
-    if (right != nullptr)
-        right_->size();
-
-    return s;
+    return h;
 }
 
 #endif
