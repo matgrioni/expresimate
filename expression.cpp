@@ -2,8 +2,8 @@
 #include <cmath>
 #include <string>
 
-#include "expression.h"
-#include "tree.h"
+#include "expression.hpp"
+#include "tree.hpp"
 
 Expression::Expression(std::string expr)
 {

@@ -2,8 +2,8 @@
 #include <random>
 #include <sstream>
 
-#include "expression_factory.h"
-#include "expression.h"
+#include "expression_factory.hpp"
+#include "expression.hpp"
 
 Expression ExpressionFactory::create(int terms, double min, double max)
 {

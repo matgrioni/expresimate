@@ -1,7 +1,7 @@
-#ifndef EXPRESSION_H
-#define EXPRESSION_H
+#ifndef EXPRESSION_HPP
+#define EXPRESSION_HPP
 
-#include "tree.h"
+#include "tree.hpp"
 
 /*********************************************************************
 *

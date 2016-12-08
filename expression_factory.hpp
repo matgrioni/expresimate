@@ -1,7 +1,7 @@
-#ifndef EXPRESSION_FACTORY_H
-#define EXPRESSION_FACTORY_H
+#ifndef EXPRESSION_FACTORY_HPP
+#define EXPRESSION_FACTORY_HPP
 
-#include "expression.h"
+#include "expression.hpp"
 
 class ExpressionFactory
 {
