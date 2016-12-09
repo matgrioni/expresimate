@@ -8,11 +8,8 @@
 class Start
 {
     public:
-        Start(std::vector<User> users);
+        Start();
         void operator() ();
-
-    private:
-        std::vector<User> users_;
 };
 
 #endif

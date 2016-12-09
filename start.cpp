@@ -1,20 +1,31 @@
 #include <iostream>
+#include <vector>
 
 #include "expression.hpp"
 #include "expression_factory.hpp"
 #include "start.hpp"
+#include "user.hpp"
 #include "util.hpp"
 
-Start::Start(std::vector<User> users) : users_(users)
+Start::Start()
 { }
 
 void Start::operator() ()
 {
-    std::cout << std::endl << "Choose your user..." << std::endl;
+    std::vector<User> users;
+    util::load_users(users);
+
+    int number_of_players;
+    std::cout << std::endl << "Number of players > ";
+    std::cin >> number_of_players;
+
+    std::vector<User> cur_users;
+
+    std::cout << "Choose your user..." << std::endl;
 
     int index = 1;
-    for (std::vector<User>::iterator iter = users_.begin();
-         iter != users_.end();
+    for (std::vector<User>::iterator iter = users.begin();
+         iter != users.end();
          iter++)
     {
         std::cout << index << ". " << iter->name() << std::endl;
@@ -22,14 +33,19 @@ void Start::operator() ()
         index++;
     }
 
-    int user_idx;
-    do
+    for (int i = 0; i < number_of_players; i++)
     {
-        std::cout << "User number > ";
-        std::cin >> user_idx;
+        int user_idx;
+        do
+        {
+            std::cout << "Number for user " << i + 1 << " > ";
+            std::cin >> user_idx;
+        }
+        while (user_idx < 1 || user_idx > users.size());
+
+        User u = users[user_idx - 1];
+        cur_users.push_back(u);
     }
-    while (user_idx < 1 || user_idx > users_.size());
-    User u = users_[user_idx - 1];
 
     ExpressionFactory factory;
 
@@ -43,7 +59,7 @@ void Start::operator() ()
         std::cin >> guess;
 
         double answer = e.eval();
-        if (util::percent_error(guess, e.eval(), 10))
+        if (util::percent_error(guess, answer, 10))
             std::cout << "Close enough!" << std::endl;
         else
             std::cout << "Wayyy off :(" << std::endl;
