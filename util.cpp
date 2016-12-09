@@ -7,9 +7,12 @@
 
 namespace util
 {
-    bool percent_error(double value, double base, double percent)
+    double percent_error(double value, double base)
     {
-        return std::abs((value - base) / base) * 100 < percent;
+        // Prevent divide by 0 if theoretical is 0.
+        if (base == 0)
+            base = 1;
+        return std::abs((value - base) / base) * 100;
     }
 
     void load_users(std::vector<User> &users)

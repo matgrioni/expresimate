@@ -7,7 +7,7 @@
 
 namespace util
 {
-    bool percent_error(double value, double base, double percent);
+    double percent_error(double value, double base);
 
     /* Loads users stored in data/users.dat into vector reference
      * provided. */
