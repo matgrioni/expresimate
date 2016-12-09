@@ -5,15 +5,15 @@
 #include "expression_factory.hpp"
 #include "expression.hpp"
 
-Expression ExpressionFactory::create(int terms, double min, double max)
+Expression ExpressionFactory::create(int terms, int min, int max)
 {
-    char ops[] = { '+', '-', '*', '/', '^' };
+    char ops[] = { '+', '-', '*', '/' };
 
     // Initialize random number distribution.
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> term_dis(min, max),
-                                    op_dis(0, 4);
+                                    op_dis(0, 3);
 
     std::stringstream ss;
     for (int i = 0; i < terms - 1; i++)

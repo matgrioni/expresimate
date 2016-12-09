@@ -6,7 +6,7 @@
 class ExpressionFactory
 {
     public:
-        Expression create(int terms, double min, double max);
+        Expression create(int terms, int min, int max);
 };
 
 #endif
