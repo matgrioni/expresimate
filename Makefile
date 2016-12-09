@@ -1,4 +1,4 @@
-OBJS = expression.o expression_factory.o user.o menu.o start.o new_user.o
+OBJS = expression.o expression_factory.o user.o menu.o start.o new_user.o util.o
 
 main: main.cpp $(OBJS)
 	g++ -std=c++0x -Wall -o main main.cpp $(OBJS)
@@ -20,6 +20,9 @@ start.o: start.hpp start.cpp
 
 new_user.o: new_user.hpp new_user.cpp
 	g++ -std=c++0x -Wall -c new_user.cpp
+
+util.o: util.hpp util.cpp
+	g++ -std=c++0x -Wall -c util.cpp
 
 clean:
 	$(RM) main $(OBJS)
