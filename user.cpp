@@ -3,6 +3,9 @@
 
 #include "user.hpp"
 
+User::User() : name_(""), age_(-1), score_(0)
+{ }
+
 User::User(std::string name)
 {
     name_ = name;
@@ -89,5 +92,6 @@ void User::depickle(std::string pickle)
 void User::process_pickle(std::vector<std::string> values)
 {
     name_ = values[0];
-    score_ = std::stoi(values[1]);
+    age_ = std::stoi(values[1]);
+    score_ = std::stoi(values[2]);
 }

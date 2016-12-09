@@ -12,6 +12,7 @@
 class User
 {
     public:
+        User();
         User(std::string name);
         User(std::string name, int age);
 
