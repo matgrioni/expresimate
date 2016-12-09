@@ -12,3 +12,7 @@
 
 # Ignore document files
 *.odt
+
+# Ignore data folder contents, but keep folder
+data/*
+!data/.keep
