@@ -4,5 +4,11 @@
 !*/
 !*.*
 
+# Ignore build files
+*.o
+
 # Ignore temporary vim files.
 *.*.swp
+
+# Ignore document files
+*.odt
