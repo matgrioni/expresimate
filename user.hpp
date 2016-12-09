@@ -16,6 +16,9 @@ class User
         User(std::string name);
         User(std::string name, int age);
 
+        std::string name();
+        void name(std::string new_name);
+
         int age();
         void age(int new_age);
 

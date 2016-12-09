@@ -20,6 +20,16 @@ User::User(std::string name, int age)
     score_ = 0;
 }
 
+std::string User::name()
+{
+    return name_;
+}
+
+void User::name(std::string new_name)
+{
+    name_ = new_name;
+}
+
 int User::age()
 {
     return age_;
