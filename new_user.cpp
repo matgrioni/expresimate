@@ -5,7 +5,7 @@
 #include "new_user.hpp"
 #include "user.hpp"
 
-void NewUserCallback::operator() ()
+void NewUser::operator() ()
 {
     std::ofstream users("./data/users.dat", std::ios::app);
 

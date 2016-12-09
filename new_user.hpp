@@ -3,7 +3,7 @@
 
 #include <string>
 
-class NewUserCallback
+class NewUser
 {
     public:
         void operator() ();
