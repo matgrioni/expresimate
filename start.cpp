@@ -2,7 +2,12 @@
 
 #include "start.hpp"
 
-void StartEntryCallback::operator() ()
+Start::Start()
+{
+
+}
+
+void Start::operator() ()
 {
     std::cout << "I am called" << std::endl;
 }

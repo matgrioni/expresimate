@@ -1,9 +1,10 @@
-#ifndef START_ENTRY_CALLBACK_HPP
-#define START_ENTRY_CALLBACK_HPP
+#ifndef START_HPP
+#define START_HPP
 
-class StartEntryCallback
+class Start
 {
     public:
+        Start();
         void operator() ();
 };
 
