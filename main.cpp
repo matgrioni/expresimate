@@ -21,7 +21,7 @@ int main()
     Expression e = factory.create(2, 0, 10);
 
     Menu m;
-    m.add_entry("Start", Start());
+    m.add_entry("Start", Start(users));
     m.add_entry("New user", NewUser(users));
 
     m.run();
