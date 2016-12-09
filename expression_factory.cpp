@@ -15,10 +15,26 @@ Expression ExpressionFactory::create(int terms, int min, int max)
     std::uniform_int_distribution<> term_dis(min, max),
                                     op_dis(0, 3);
 
+    int term;
+    char op;
+    char prev_op = '/0';
     std::stringstream ss;
-    for (int i = 0; i < terms - 1; i++)
-        ss << term_dis(gen) << ops[op_dis(gen)];
-    ss << term_dis(gen);
+    for (int i = 0; i < terms; i++)
+    {
+        // Make sure no divide by zero.
+        do
+        {
+            term = term_dis(gen);
+            op = ops[op_dis(gen)];
+        }
+        while (prev_op == '/' && term == 0);
+
+        ss << term;
+        if (i < terms - 1)
+            ss << op;
+
+        prev_op = op;
+    }
 
     return Expression(ss.str());
 }
