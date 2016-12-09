@@ -3,11 +3,12 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 typedef struct
 {
     std::string title;
-    void (*func)(void);
+    std::function<void()> func;
 } MenuEntry;
 
 /*********************************************************************
@@ -25,7 +26,7 @@ class Menu
            just encapsulable logic. Further, no duplicate entries are
            allowed, so this function returns false if the title
            already exists and true otherwise. */
-        bool add_entry(std::string title, void (*func)(void));
+        bool add_entry(std::string title, std::function<void()> func);
 
         /* Removes an entry from the list based on the title given.
            Returns true if the entry was removed, and false

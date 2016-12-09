@@ -4,7 +4,7 @@
 #include "menu.hpp"
 
 // TODO: Create functor for add_entry and remove_entry algorithms
-bool Menu::add_entry(std::string title, void (*func)(void))
+bool Menu::add_entry(std::string title, std::function<void()> func)
 {
     std::vector<MenuEntry>::iterator it;
     it = std::find_if(entries_.begin(), entries_.end(),
