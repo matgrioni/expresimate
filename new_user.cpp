@@ -2,16 +2,20 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "new_user.hpp"
 #include "user.hpp"
+#include "util.hpp"
 
-NewUser::NewUser(std::vector<User> users) : users_(users)
+NewUser::NewUser()
 { }
 
 void NewUser::operator() ()
 {
-    std::ofstream users("./data/users.dat", std::ios::app);
+    util::load_users(users_);
+
+    std::ofstream users_file("./data/users.dat", std::ios::app);
 
     std::cin.ignore(100, '\n');
     std::string name;
@@ -27,9 +31,9 @@ void NewUser::operator() ()
     std::cin >> age;
 
     User u(name, age);
-    users << u.pickle() << std::endl;
+    users_file << u.pickle() << std::endl;
 
-    users.close();
+    users_file.close();
 }
 
 bool NewUser::user_name_exists(std::string name)

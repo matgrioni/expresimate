@@ -9,7 +9,7 @@
 class NewUser
 {
     public:
-        NewUser(std::vector<User> users);
+        NewUser();
         void operator() ();
 
     private:
