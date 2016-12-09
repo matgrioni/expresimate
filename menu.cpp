@@ -32,27 +32,30 @@ bool Menu::remove_entry(std::string title)
 
 void Menu::run()
 {
-    // TODO: Two counters around one for loop. Find better way
-    int index = 1;
-    for (std::vector<MenuEntry>::iterator iter = entries_.begin();
-         iter != entries_.end();
-         iter++)
+    while (true)
     {
-        std::cout << index << ". " << iter->title << std::endl;
-        index++;
-    }
+        // TODO: Two counters around one for loop. Find better way
+        int index = 1;
+        for (std::vector<MenuEntry>::iterator iter = entries_.begin();
+             iter != entries_.end();
+             iter++)
+        {
+            std::cout << index << ". " << iter->title << std::endl;
+            index++;
+        }
 
-    // TODO: Add error message here.
-    int option;
-    do
-    {
-        std::cout << "> ";
-        std::cin >> option;
-    }
-    while (option < 1 || option > entries_.size());
+        // TODO: Add error message here.
+        int option;
+        do
+        {
+            std::cout << "> ";
+            std::cin >> option;
+        }
+        while (option < 1 || option > entries_.size());
 
-    // Now that option is selected, run the associated callback.
-    entries_[option - 1].func();
+        // Now that option is selected, run the associated callback.
+        entries_[option - 1].func();
+    }
 }
 
 void Menu::clear()
