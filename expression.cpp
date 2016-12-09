@@ -68,8 +68,26 @@ void Expression::parse_(std::string expr, BinaryTree<std::string>* tree)
     while(ops[0] < 0 && index < expr.length())
     {
         char cur = expr.at(index);
-        if (cur == '+' || cur == '-')
+        if (cur == '+')
             ops[0] = index;
+        else if (cur == '-')
+        {
+            // '-' can be binary or unary operator. If it is unary
+            // operator then another binary operator is before it
+            // operator or starts the entire expression. Otherwise,
+            // it is a binary operator.
+            bool after_op = false;
+            if (index > 0)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    after_op = after_op || ops[i] == (index - 1);
+                }
+            }
+
+            if (index != 0 && !after_op)
+                ops[0] = index;
+        }
         else if (cur == '*' || cur == '/')
             ops[1] = index;
         else if (cur == '^')
@@ -91,6 +109,12 @@ void Expression::parse_(std::string expr, BinaryTree<std::string>* tree)
     if (opIndex > -1)
     {
         char op = expr.at(opIndex);
+        if (op == '-')
+        {
+            op = '+';
+            expr.insert(opIndex + 1, 1, '-');
+        }
+
         tree->node(std::string(1, op));
 
         BinaryTree<std::string> *left = new BinaryTree<std::string>();
