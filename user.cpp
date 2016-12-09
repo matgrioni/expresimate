@@ -6,7 +6,25 @@
 User::User(std::string name)
 {
     name_ = name;
+    age_ = -1;
     score_ = 0;
+}
+
+User::User(std::string name, int age)
+{
+    name_ = name;
+    age_ = age;
+    score_ = 0;
+}
+
+int User::age()
+{
+    return age_;
+}
+
+void User::age(int new_age)
+{
+    age_ = new_age;
 }
 
 int User::score()
@@ -23,6 +41,7 @@ std::string User::pickle()
 {
     std::stringstream ss;
     ss << "{ name: " << name_ << " }";
+    ss << ", { age: " << age_ << " }";
     ss << ", { score: " << score_ << " }";
 
     return ss.str();

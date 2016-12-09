@@ -13,6 +13,10 @@ class User
 {
     public:
         User(std::string name);
+        User(std::string name, int age);
+
+        int age();
+        void age(int new_age);
 
         int score();
         void score(int new_score);
@@ -28,6 +32,7 @@ class User
         void process_pickle(std::vector<std::string> values);
 
         std::string name_;
+        int age_;
         int score_;
 };
 
