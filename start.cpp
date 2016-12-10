@@ -20,6 +20,7 @@ void Start::operator() ()
     std::cin >> number_of_players;
 
     std::vector<User> chosen_users;
+    std::vector<GameSession> sessions;
 
     std::cout << "Choose your user..." << std::endl;
 
@@ -45,20 +46,28 @@ void Start::operator() ()
 
         User u = users[user_idx - 1];
         chosen_users.push_back(u);
+        sessions.push_back(GameSession());
     }
 
     ExpressionFactory factory;
 
-    int terms = 2;
-    int max = 10;
-    int round = 1;
     int turn = 0;
-    while(true)
+    bool one_alive = true;
+    while(one_alive)
     {
         User &cur_user = chosen_users[turn];
-        std::cout << std::endl << cur_user.name() << "'s turn!" << std::endl;
-        std::cout << "Round " << round << std::endl;
+        GameSession &cur_session = sessions[turn];
 
+        std::cout << std::endl << cur_user.name() << "'s turn!" << std::endl;
+        std::cout << "Round " << cur_session.round << std::endl;
+        std::cout << "Hit any <enter> when ready!" << std::endl;
+        std::cin.ignore(255, '\n');
+        std::cin.get();
+
+        // Every other round the number of terms goes up one and every
+        // other round the max goes up by 2.
+        int terms = 2 + (cur_session.round - 1) / 2;
+        int max = 10 + cur_session.round - (cur_session.round % 2);
         Expression e = factory.create(terms, 0, max);
 
         double guess;
@@ -70,23 +79,36 @@ void Start::operator() ()
         double error;
         if ((error = util::percent_error(guess, answer)) < 10)
         {
-            std::cout << "Good for me!" << std::endl;
+            std::cout << "Good!" << std::endl;
 
-            round++;
-            if (round % 2 == 0)
-                max += 2;
-            else
-                terms++;
+            cur_session.round++;
 
             int gained = (max + terms) * (10 - error);
             cur_user.score(cur_user.score() + gained);
             std::cout << "New score: " << cur_user.score() << std::endl;
 
-            turn = (turn + 1) % number_of_players;
         }
         else
+        {
             std::cout << "Wayyy off :(" << std::endl;
+            cur_session.lives--;
 
+            if (cur_session.lives <= 0)
+                cur_session.alive = false;
+        }
         std::cout << "The actual answer was " << answer << std::endl;
+        std::cout << cur_session.lives << " lives left" << std::endl;
+
+        int players_checked = 0;
+        do
+        {
+            turn = (turn + 1) % number_of_players;
+            players_checked++;
+        }
+        while (!sessions[turn].alive && players_checked < number_of_players);
+
+        one_alive = players_checked <= number_of_players;
     }
+
+    std::cout << "Everybody's lost their chance!" << std::endl;
 }
