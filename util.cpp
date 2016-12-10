@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "util.hpp"
+#include "user.hpp"
 
 namespace util
 {
