@@ -1,3 +1,4 @@
+#include <chrono>
 #include <iostream>
 #include <vector>
 
@@ -70,23 +71,33 @@ void Start::operator() ()
         int max = 10 + cur_session.round - (cur_session.round % 2);
         Expression e = factory.create(terms, 0, max);
 
+        // Used to keep track of how much time it took the user to
+        // input a guess. If it is more than 10 seconds, then they
+        // get no points.
+        auto start = std::chrono::system_clock::now();
+
         double guess;
         std::cout << e.expr() << std::endl;
         std::cout << "Guess? > ";
         std::cin >> guess;
 
+        auto end = std::chrono::system_clock::now();
+
         double answer = e.eval();
         double error;
         if ((error = util::percent_error(guess, answer)) < 10)
         {
+            float dur = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.f;
             std::cout << "Good!" << std::endl;
+            std::cout << "Took " << dur << " s" << std::endl;
 
             cur_session.round++;
 
-            int gained = (max + terms) * (10 - error);
+            // The harder the problem is, the closer they are, and the
+            // less time they take, the more points they get.
+            int gained = (max + terms) * (10 - error) * ((10 - dur) / 10)
             cur_user.score(cur_user.score() + gained);
             std::cout << "New score: " << cur_user.score() << std::endl;
-
         }
         else
         {
