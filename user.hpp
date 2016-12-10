@@ -22,8 +22,12 @@ class User
         int age();
         void age(int new_age);
 
-        int score();
-        void score(int new_score);
+        /* Getters and setters for the highscore. Only difference is
+         * that the highscore is only changed if new_score is greater
+         * than the current highscore. True is returned if the
+         * highscore is changed, and false otherwise. */
+        int highscore();
+        bool highscore(int new_score);
 
         /* Pickling is essentially converting a complex data structure
          * into a simpler one such as a string, and reconstructing
@@ -37,7 +41,7 @@ class User
 
         std::string name_;
         int age_;
-        int score_;
+        int highscore_;
 };
 
 #endif

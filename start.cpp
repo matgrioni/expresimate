@@ -95,9 +95,9 @@ void Start::operator() ()
 
             // The harder the problem is, the closer they are, and the
             // less time they take, the more points they get.
-            int gained = (max + terms) * (10 - error) * ((10 - dur) / 10)
-            cur_user.score(cur_user.score() + gained);
-            std::cout << "New score: " << cur_user.score() << std::endl;
+            int gained = (max + terms) * (10 - error) * ((10 - dur) / 10);
+            cur_session.score += gained;
+            std::cout << "New score: " << cur_session.score << std::endl;
         }
         else
         {

@@ -3,21 +3,21 @@
 
 #include "user.hpp"
 
-User::User() : name_(""), age_(-1), score_(0)
+User::User() : name_(""), age_(-1), highscore_(0)
 { }
 
 User::User(std::string name)
 {
     name_ = name;
     age_ = -1;
-    score_ = 0;
+    highscore_ = 0;
 }
 
 User::User(std::string name, int age)
 {
     name_ = name;
     age_ = age;
-    score_ = 0;
+    highscore_ = 0;
 }
 
 std::string User::name()
@@ -40,14 +40,20 @@ void User::age(int new_age)
     age_ = new_age;
 }
 
-int User::score()
+int User::highscore()
 {
-    return score_;
+    return highscore_;
 }
 
-void User::score(int new_score)
+bool User::highscore(int new_score)
 {
-    score_ = new_score;
+    if (new_score > highscore_)
+    {
+        highscore_ = new_score;
+        return true;
+    }
+
+    return false;
 }
 
 std::string User::pickle()
@@ -55,7 +61,7 @@ std::string User::pickle()
     std::stringstream ss;
     ss << "{ name: " << name_ << " }";
     ss << ", { age: " << age_ << " }";
-    ss << ", { score: " << score_ << " }";
+    ss << ", { highscore: " << highscore_ << " }";
 
     return ss.str();
 }
@@ -103,5 +109,5 @@ void User::process_pickle(std::vector<std::string> values)
 {
     name_ = values[0];
     age_ = std::stoi(values[1]);
-    score_ = std::stoi(values[2]);
+    highscore_ = std::stoi(values[2]);
 }
