@@ -118,8 +118,17 @@ void Start::operator() ()
         }
         while (!sessions[turn].alive && players_checked < number_of_players);
 
-        one_alive = players_checked <= number_of_players;
+        one_alive = sessions[turn].alive;
     }
 
     std::cout << "Everybody's lost their chance!" << std::endl;
+    // TODO: Reusing variable, find better way to iterate over vector
+    index = 0;
+    for (GameSession g : sessions)
+    {
+        chosen_users[index].highscore(g.score);
+        index++;
+    }
+
+    util::save_users(chosen_users);
 }
