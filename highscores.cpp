@@ -14,8 +14,11 @@ void Highscores::operator() ()
     std::sort(users.begin(), users.end(),
               [] (User a, User b) { return a.highscore() < b.highscore(); });
 
+    std::cout << std::endl << "Highscores" << std::endl;
     for (User u : users)
     {
         std::cout << u.name() << ": " << u.highscore() << std::endl;
     }
+
+    std::cout << std::endl;
 }
