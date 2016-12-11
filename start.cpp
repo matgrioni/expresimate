@@ -61,7 +61,7 @@ void Start::operator() ()
 
         std::cout << std::endl << cur_user.name() << "'s turn!" << std::endl;
         std::cout << "Round " << cur_session.round << std::endl;
-        std::cout << "Hit any <enter> when ready!" << std::endl;
+        std::cout << "Hit <enter> when ready!" << std::endl;
         std::cin.ignore(255, '\n');
         std::cin.get();
 
