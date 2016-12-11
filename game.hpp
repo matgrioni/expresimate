@@ -1,5 +1,5 @@
-#ifndef START_HPP
-#define START_HPP
+#ifndef GAME_HPP
+#define GAME_HPP
 
 #include <vector>
 
@@ -15,11 +15,17 @@ typedef struct GameSession
     int score;
 } GameSession;
 
-class Start
+class Game
 {
     public:
-        Start();
         void operator() ();
+
+    private:
+        static const int MAX_START = 10;
+        static const int TERMS_EXPR_START = 2;
+
+        static constexpr double PERCENT_ERROR = 10;
+        static constexpr double TIME_ALLOWED = 10;
 };
 
 #endif

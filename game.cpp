@@ -1,17 +1,15 @@
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <vector>
 
 #include "expression.hpp"
 #include "expression_factory.hpp"
-#include "start.hpp"
+#include "game.hpp"
 #include "user.hpp"
 #include "util.hpp"
 
-Start::Start()
-{ }
-
-void Start::operator() ()
+void Game::operator() ()
 {
     std::vector<User> users;
     util::load_users(users);
@@ -67,8 +65,8 @@ void Start::operator() ()
 
         // Every other round the number of terms goes up one and every
         // other round the max goes up by 2.
-        int terms = 2 + (cur_session.round - 1) / 2;
-        int max = 10 + cur_session.round - (cur_session.round % 2);
+        int terms = TERMS_EXPR_START + (cur_session.round - 1) / 2;
+        int max = TERMS_EXPR_START + cur_session.round - (cur_session.round % 2);
         Expression e = factory.create(terms, 0, max);
 
         // Used to keep track of how much time it took the user to
@@ -82,30 +80,44 @@ void Start::operator() ()
         std::cin >> guess;
 
         auto end = std::chrono::system_clock::now();
+        float dur = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.f;
+        std::cout << "Took " << dur << " s" << std::endl;
 
         double answer = e.eval();
         double error;
-        if ((error = util::percent_error(guess, answer)) < 10)
+        if (answer == 0)
+            // Allow the guesser to be within the range (-0.2, 0.2)
+            // when the expected answer is 0.
+            error = std::abs(guess / 2) * 100;
+        else
+            error = util::percent_error(guess, answer);
+
+        // The harder the problem is, the closer they are, and the
+        // less time they take, the more points they get.
+        int diff = std::abs((max + terms) * (PERCENT_ERROR - error) * ((TIME_ALLOWED - dur) / TIME_ALLOWED));
+
+        if (error < TIME_ALLOWED && dur < TIME_ALLOWED)
         {
-            float dur = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.f;
             std::cout << "Good!" << std::endl;
-            std::cout << "Took " << dur << " s" << std::endl;
 
             cur_session.round++;
 
-            // The harder the problem is, the closer they are, and the
-            // less time they take, the more points they get.
-            int gained = (max + terms) * (10 - error) * ((10 - dur) / 10);
-            cur_session.score += gained;
+            cur_session.score += diff;
             std::cout << "New score: " << cur_session.score << std::endl;
         }
         else
         {
-            std::cout << "Wayyy off :(" << std::endl;
+            std::cout << "Sorry :(" << std::endl;
             cur_session.lives--;
+            cur_session.score -= diff;
 
             if (cur_session.lives <= 0)
+            {
                 cur_session.alive = false;
+                std::cout << "Final score: " << cur_session.score << std::endl;
+            }
+            else
+                std::cout << "New score: " << cur_session.score << std::endl;
         }
         std::cout << "The actual answer was " << answer << std::endl;
         std::cout << cur_session.lives << " lives left" << std::endl;
@@ -121,12 +133,15 @@ void Start::operator() ()
         one_alive = sessions[turn].alive;
     }
 
-    std::cout << "Everybody's lost their chance!" << std::endl;
+    std::cout << "Everybody's lost their chance!" << std::endl << std::endl;
     // TODO: Reusing variable, find better way to iterate over vector
     index = 0;
     for (GameSession g : sessions)
     {
-        chosen_users[index].highscore(g.score);
+        bool best = chosen_users[index].highscore(g.score);
+        if (best)
+            std::cout << chosen_users[index].name() << " has a new highscore" << std::endl;
+
         index++;
     }
 
