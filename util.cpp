@@ -12,9 +12,6 @@ namespace util
 {
     double percent_error(double value, double base)
     {
-        // Prevent divide by 0 if theoretical is 0.
-        if (base == 0)
-            base = 1;
         return std::abs((value - base) / base) * 100;
     }
 
