@@ -72,4 +72,29 @@ namespace util
 
         users_file.close();
     }
+
+    bool remove_user(User user)
+    {
+        std::vector<User> users;
+        load_users(users);
+
+        std::string name = user.name();
+        auto result = std::find_if(users.begin(), users.end(),
+                                   [name] (User o) { return name == o.name(); });
+        if (result != users.end())
+            users.erase(result);
+        else
+            return false;
+
+        std::ofstream users_file("./data/users.dat");
+
+        for (User u : users)
+        {
+            users_file << u.pickle() << std::endl;
+        }
+
+        users_file.close();
+
+        return true;
+    }
 }

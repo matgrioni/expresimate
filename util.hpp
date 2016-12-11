@@ -17,6 +17,11 @@ namespace util
      * the user already exists, the record is updated. Otherwise,
      * a new entry is made. */
     void save_users(std::vector<User> users);
+
+    /* Removes the given users from the data/users.dat store if they
+     * exist. Returns false it the user does not exist, and true
+     * otherwise. */
+    bool remove_user(User user);
 }
 
 #endif

@@ -1,4 +1,4 @@
-OBJS = expression.o expression_factory.o user.o menu.o game.o new_user.o highscores.o util.o
+OBJS = expression.o expression_factory.o user.o menu.o game.o new_user.o remove_user.o highscores.o util.o
 
 main: main.cpp $(OBJS)
 	g++ -std=c++0x -Wall -o main main.cpp $(OBJS)
@@ -8,6 +8,9 @@ game.o: game.hpp game.cpp expression_factory.o menu.o user.o util.o expression.o
 
 new_user.o: new_user.hpp new_user.cpp menu.o user.o util.o
 	g++ -std=c++0x -Wall -c new_user.cpp
+
+remove_user.o: remove_user.hpp remove_user.cpp menu.o user.o util.o
+	g++ -std=c++0x -Wall -c remove_user.cpp
 
 highscores.o: highscores.hpp highscores.cpp menu.o user.o util.o
 	g++ -std=c++0x -Wall -c highscores.cpp
