@@ -1,34 +1,26 @@
-OBJS = expression.o expression_factory.o user.o menu.o game.o new_user.o remove_user.o highscores.o util.o
+CC := g++
+CFLAGS := -std=c++0x -Wall
+INC := -I include
+SRCDIR := src
+BUILDDIR := build
+TARGET := bin/main
 
-main: main.cpp $(OBJS)
-	g++ -std=c++0x -Wall -o main main.cpp $(OBJS)
+SRCEXT := cpp
+SRCS := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+OBJS := $(patsubst $(SRCDIR)/%, $(BUILDDIR)/%, $(SRCS:.$(SRCEXT)=.o))
 
-game.o: game.hpp game.cpp expression_factory.o menu.o user.o util.o expression.o expression_factory.o
-	g++ -std=c++0x -Wall -c game.cpp expression_factory.o
+$(TARGET): $(OBJS)
+	@echo "Linking..."
+	@echo "$(CC) $^ -o $(TARGET)"
+	$(CC) $^ -o $(TARGET)
 
-new_user.o: new_user.hpp new_user.cpp menu.o user.o util.o
-	g++ -std=c++0x -Wall -c new_user.cpp
-
-remove_user.o: remove_user.hpp remove_user.cpp menu.o user.o util.o
-	g++ -std=c++0x -Wall -c remove_user.cpp
-
-highscores.o: highscores.hpp highscores.cpp menu.o user.o util.o
-	g++ -std=c++0x -Wall -c highscores.cpp
-
-util.o: util.hpp util.cpp user.o
-	g++ -std=c++0x -Wall -c util.cpp
-
-user.o: user.hpp user.cpp
-	g++ -std=c++0x -Wall -c user.cpp
-
-menu.o: menu.hpp menu.cpp
-	g++ -std=c++0x -Wall -c menu.cpp
-
-expression_factory.o: expression_factory.hpp expression_factory.cpp expression.o
-	g++ -std=c++0x -Wall -c expression_factory.cpp
-
-expression.o: expression.hpp expression.cpp
-	g++ -std=c++0x -Wall -c expression.cpp
+$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+	@echo "$(CC) $(CFLAGS) -c -o $@ $<"
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	$(RM) main $(OBJS)
+	@echo "Cleaning..."
+	@echo "$(RM) $(OBJS) $(TARGET)"
+	$(RM) $(OBJS) $(TARGET)
+
+.PHONY: clean
