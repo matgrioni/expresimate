@@ -1,17 +1,11 @@
-# Ignore compiled files (including files without extensions).
-*.out
-*
-!*/
-!*.*
-
-# Ignore build files
-*.o
+# Ignore compiled files
+build/*
+!build/.keep
+bin/*
+!bin/.keep
 
 # Ignore temporary vim files.
 *.*.swp
-
-# Ignore document files
-*.odt
 
 # Ignore data folder contents, but keep folder
 data/*
