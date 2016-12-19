@@ -14,8 +14,9 @@ typedef struct
 /*********************************************************************
  * A basic command line menu. Provide the desired options as a
  * menu entry. A menu entry consists of a name or title of the option
- * and a method to invoke on the option being selected. To use the
- * Menu, simply instantiate it and then run it.
+ * and a method to invoke on the option being selected. There is a
+ * exit option that is automatically added to end the loop. So to use
+ * the Menu, simply instantiate it and then run it.
  ********************************************************************/
 class Menu
 {
@@ -39,7 +40,14 @@ class Menu
         void clear();
 
     private:
+        /* Sets the private variable running to false. So if the menu
+           is currently running, it will be stopped. No effect,
+           otherwise. */
+        void quit();
+
+        static const std::string QUIT;
         std::vector<MenuEntry> entries_;
+        bool running;
 };
 
 #endif

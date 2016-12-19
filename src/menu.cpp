@@ -3,6 +3,8 @@
 
 #include "menu.hpp"
 
+const std::string Menu::QUIT = "Quit";
+
 // TODO: Create functor for add_entry and remove_entry algorithms
 bool Menu::add_entry(std::string title, std::function<void()> func)
 {
@@ -32,7 +34,11 @@ bool Menu::remove_entry(std::string title)
 
 void Menu::run()
 {
-    while (true)
+    MenuEntry entry = { QUIT, std::bind(&Menu::quit, this) };
+    entries_.push_back(entry);
+
+    running = true;
+    while (running)
     {
         // TODO: Two counters around one for loop. Find better way
         int index = 1;
@@ -61,4 +67,9 @@ void Menu::run()
 void Menu::clear()
 {
     entries_.clear();
+}
+
+void Menu::quit()
+{
+    running = false;
 }

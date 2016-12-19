@@ -17,7 +17,6 @@ int main()
     m.add_entry("New user", NewUser());
     m.add_entry("Remove user", RemoveUser());
     m.add_entry("Highscores", Highscores());
-    m.add_entry("Quit", quit);
 
     m.run();
 
