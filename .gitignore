@@ -10,3 +10,6 @@ bin/*
 # Ignore data folder contents, but keep folder
 data/*
 !data/.keep
+
+# Ignore gimp project files
+*.xcf
