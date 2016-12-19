@@ -25,7 +25,7 @@ bool Menu::add_entry(std::string title, std::function<void()> func)
 
 bool Menu::remove_entry(std::string title)
 {
-    int begin_size = entries_.size();
+    std::vector<MenuEntry>::size_type begin_size = entries_.size();
     std::remove_if(entries_.begin(), entries_.end(),
                    [title] (MenuEntry entry) { return entry.title == title; });
 
@@ -51,7 +51,7 @@ void Menu::run()
         }
 
         // TODO: Add error message here.
-        int option;
+        std::vector<MenuEntry>::size_type option;
         do
         {
             std::cout << "> ";

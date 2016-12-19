@@ -19,15 +19,15 @@ class BinaryTree
         ~BinaryTree();
 
         void node(T node);
-        T node();
+        T node() const;
 
         void left(BinaryTree<T> *tree);
-        BinaryTree<T>* left();
+        BinaryTree<T>* left() const;
 
         void right(BinaryTree<T> *tree);
-        BinaryTree<T>* right();
+        BinaryTree<T>* right() const;
 
-        int height();
+        int height() const;
 
     private:
         T node_;
@@ -71,7 +71,7 @@ void BinaryTree<T>::node(T node)
 }
 
 template <class T>
-T BinaryTree<T>::node()
+T BinaryTree<T>::node() const
 {
     return node_;
 }
@@ -84,7 +84,7 @@ void BinaryTree<T>::left(BinaryTree<T> *tree)
 }
 
 template <class T>
-BinaryTree<T>* BinaryTree<T>::left()
+BinaryTree<T>* BinaryTree<T>::left() const
 {
     return left_;
 }
@@ -97,13 +97,13 @@ void BinaryTree<T>::right(BinaryTree<T> *tree)
 }
 
 template <class T>
-BinaryTree<T>* BinaryTree<T>::right()
+BinaryTree<T>* BinaryTree<T>::right() const
 {
     return right_;
 }
 
 template <class T>
-int BinaryTree<T>::height()
+int BinaryTree<T>::height() const
 {
     int h = 0;
 
