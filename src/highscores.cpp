@@ -4,12 +4,14 @@
 
 #include "highscores.hpp"
 #include "user.hpp"
-#include "util.hpp"
+#include "user_db.hpp"
 
 void Highscores::operator() ()
 {
-    std::vector<User> users;
-    util::load_users(users);
+    UserDB userDB("./data/users.dat");
+    userDB.init();
+
+    std::vector<User> users = userDB.all();
 
     std::sort(users.begin(), users.end(),
               [] (User a, User b) { return a.highscore() < b.highscore(); });

@@ -6,16 +6,16 @@
 
 #include "new_user.hpp"
 #include "user.hpp"
-#include "util.hpp"
+#include "user_db.hpp"
 
 NewUser::NewUser()
 { }
 
 void NewUser::operator() ()
 {
-    util::load_users(users_);
-
-    std::ofstream users_file("./data/users.dat", std::ios::app);
+    // TODO: Use constants
+    UserDB userDB("./data/users.dat");
+    userDB.init();
 
     std::cin.ignore(100, '\n');
     std::string name;
@@ -31,9 +31,8 @@ void NewUser::operator() ()
     std::cin >> age;
 
     User u(name, age);
-    users_file << u.pickle() << std::endl;
-
-    users_file.close();
+    userDB.add(u);
+    userDB.commit();
 }
 
 bool NewUser::user_name_exists(std::string name)

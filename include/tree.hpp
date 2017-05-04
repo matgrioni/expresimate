@@ -10,6 +10,8 @@
 *
 *********************************************************************/
 
+// TODO: Can I separate interface from implementation here.
+
 template <class T>
 class BinaryTree
 {

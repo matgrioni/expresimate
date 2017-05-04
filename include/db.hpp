@@ -1,24 +1,37 @@
 #ifndef DB_HPP
 #define DB_HPP
 
+#include <algorithm>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
+
+#include <iostream>
+
+// TODO: Can I separate interface from implementation here.
 
 template <class T>
 class DB
 {
     public:
-        /* Create a DB from the provided file. */
+        /* Create or open a DB from the provided file. */
         DB(std::string filename);
-        virtual ~DB();
+        // TODO:
+        void init();
 
         std::vector<T> all() const;
+
 
         void add(T item);
 
         /* Removes the given item if it exists from the database. If
            the item does not exist returns false, true otherwise. */
         bool remove(T item);
+
+        bool update(T old_item, T new_item);
+
+        void commit();
 
     private:
         /* Virtual methods regarding how to recreate and destruct a
@@ -42,5 +55,122 @@ class DB
         std::string filename_;
         std::vector<T> items_;
 };
+
+template <class T>
+DB<T>::DB(std::string filename)
+{
+    filename_ = filename;
+}
+
+template <class T>
+void DB<T>::init()
+{
+    std::ifstream store(filename_);
+
+    // Create an item T for each line in the database and then add it
+    // to the items vector.
+    std::string line;
+    while (getline(store, line))
+    {
+        std::vector<std::string> fields = parse(line);
+        items_.push_back(construct(fields));
+    }
+
+    store.close();
+}
+
+template <class T>
+std::vector<T> DB<T>::all() const
+{
+    return items_;
+}
+
+template <class T>
+void DB<T>::add(T item)
+{
+    items_.push_back(item);
+}
+
+template <class T>
+bool DB<T>::remove(T item)
+{
+    items_.erase(std::remove(items_.begin(), items_.end(), item), items_.end());
+    // TODO:
+    return false;
+}
+
+template <class T>
+bool DB<T>::update(T old_item, T new_item)
+{
+    typename std::vector<T>::iterator iter = std::find(items_.begin(), items_.end(), old_item);
+    if (iter != items_.end())
+    {
+        *iter = new_item;
+        return true;
+    }
+
+    return false;
+}
+
+template <class T>
+void DB<T>::commit()
+{
+    // TODO: Are both flags needed?
+    std::ofstream store(filename_, std::ios::out | std::ios::trunc);
+
+    for (T item : items_)
+    {
+        std::vector<std::string> fields = destruct(item);
+        store << reduce(fields) << std::endl;
+    }
+
+    store.close();
+}
+
+template <class T>
+std::vector<std::string> DB<T>::parse(std::string line)
+{
+    std::vector<std::string> fields;
+    std::stringstream ss;
+
+    for (int i = 0; i < line.length(); i++)
+    {
+        char cur = line.at(i);
+
+        if (cur == '\t')
+        {
+            fields.push_back(ss.str());
+            ss.str("");
+        }
+        else
+        {
+            ss << cur;
+        }
+    }
+
+    fields.push_back(ss.str());
+
+    return fields;
+}
+
+template <class T>
+std::string DB<T>::reduce(std::vector<std::string> fields)
+{
+    std::stringstream ss;
+
+    // When iterating do not add a tab at the end to the reduced
+    // string. So iterate through all fields except the last and add
+    // that one manually.
+    for (std::vector<std::string>::iterator iter = fields.begin();
+         iter != fields.end() - 1;
+         iter++)
+    {
+        ss << *iter << "\t";
+    }
+
+    ss << fields.back();
+
+    return ss.str();
+}
 
 #endif

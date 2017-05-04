@@ -7,12 +7,15 @@
 #include "expression_factory.hpp"
 #include "game.hpp"
 #include "user.hpp"
+#include "user_db.hpp"
 #include "util.hpp"
 
 void Game::operator() ()
 {
-    std::vector<User> users;
-    util::load_users(users);
+    UserDB userDB("./data/users.dat");
+    userDB.init();
+
+    std::vector<User> users = userDB.all();
 
     int number_of_players;
     std::cout << std::endl << "Number of players > ";
@@ -23,6 +26,7 @@ void Game::operator() ()
 
     std::cout << "Choose your user..." << std::endl;
 
+    // TODO:
     int index = 1;
     for (std::vector<User>::iterator iter = users.begin();
          iter != users.end();
@@ -138,12 +142,17 @@ void Game::operator() ()
     index = 0;
     for (GameSession g : sessions)
     {
-        bool best = chosen_users[index].highscore(g.score);
+        User n_u = chosen_users[index];
+
+        bool best = n_u.highscore(g.score);
         if (best)
+        {
+            userDB.update(chosen_users[index], n_u);
             std::cout << chosen_users[index].name() << " has a new highscore" << std::endl;
+        }
 
         index++;
     }
 
-    util::save_users(chosen_users);
+    userDB.commit();
 }

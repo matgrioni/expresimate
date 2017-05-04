@@ -15,6 +15,7 @@ class User
         User();
         User(std::string name);
         User(std::string name, int age);
+        User(std::string name, int age, int highscore);
 
         std::string name();
         void name(std::string new_name);
@@ -29,16 +30,9 @@ class User
         int highscore();
         bool highscore(int new_score);
 
-        /* Pickling is essentially converting a complex data structure
-         * into a simpler one such as a string, and reconstructing
-         * an object based on this string. Right now, pickling does
-         * not support '{' or '}' in the data. */
-        std::string pickle();
-        void depickle(std::string pickle);
+        bool operator==(const User& u);
 
     private:
-        void process_pickle(std::vector<std::string> values);
-
         std::string name_;
         int age_;
         int highscore_;
