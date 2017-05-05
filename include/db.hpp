@@ -17,18 +17,15 @@ class DB
     public:
         /* Create or open a DB from the provided file. */
         DB(std::string filename);
-        // TODO:
-        void init();
+        void open();
 
         std::vector<T> all() const;
 
-
+        /* Basic operations on the database objects. remove and update return
+           true if the operation changed the underlying data and false
+           otherwise. */
         void add(T item);
-
-        /* Removes the given item if it exists from the database. If
-           the item does not exist returns false, true otherwise. */
         bool remove(T item);
-
         bool update(T old_item, T new_item);
 
         void commit();
@@ -63,7 +60,7 @@ DB<T>::DB(std::string filename)
 }
 
 template <class T>
-void DB<T>::init()
+void DB<T>::open()
 {
     std::ifstream store(filename_);
 
@@ -94,18 +91,25 @@ void DB<T>::add(T item)
 template <class T>
 bool DB<T>::remove(T item)
 {
-    items_.erase(std::remove(items_.begin(), items_.end(), item), items_.end());
-    // TODO:
+    typename std::vector<T>::iterator it = std::find(items_.begin(),
+                                                     items_.end(), item);
+    if (it != items_.end())
+    {
+        items_.erase(it);
+        return true;
+    }
+
     return false;
 }
 
 template <class T>
 bool DB<T>::update(T old_item, T new_item)
 {
-    typename std::vector<T>::iterator iter = std::find(items_.begin(), items_.end(), old_item);
-    if (iter != items_.end())
+    typename std::vector<T>::iterator it = std::find(items_.begin(),
+                                                     items_.end(), old_item);
+    if (it != items_.end())
     {
-        *iter = new_item;
+        *it = new_item;
         return true;
     }
 
@@ -115,8 +119,7 @@ bool DB<T>::update(T old_item, T new_item)
 template <class T>
 void DB<T>::commit()
 {
-    // TODO: Are both flags needed?
-    std::ofstream store(filename_, std::ios::out | std::ios::trunc);
+    std::ofstream store(filename_, std::ios::trunc);
 
     for (T item : items_)
     {

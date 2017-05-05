@@ -9,7 +9,7 @@
 void RemoveUser::operator() ()
 {
     UserDB userDB("./data/users.dat");
-    userDB.init();
+    userDB.open();
 
     std::vector<User> users = userDB.all();
 

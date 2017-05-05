@@ -17,6 +17,8 @@ class User
         User(std::string name, int age);
         User(std::string name, int age, int highscore);
 
+        long id();
+
         std::string name();
         void name(std::string new_name);
 
@@ -33,9 +35,12 @@ class User
         bool operator==(const User& u);
 
     private:
+        long id_;
         std::string name_;
         int age_;
         int highscore_;
+
+        static long next_id_;
 };
 
 #endif

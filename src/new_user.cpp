@@ -15,7 +15,7 @@ void NewUser::operator() ()
 {
     // TODO: Use constants
     UserDB userDB("./data/users.dat");
-    userDB.init();
+    userDB.open();
 
     std::cin.ignore(100, '\n');
     std::string name;

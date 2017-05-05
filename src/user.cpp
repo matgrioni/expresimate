@@ -3,18 +3,33 @@
 
 #include "user.hpp"
 
+long User::next_id_ = 0;
+
 User::User() : name_(""), age_(-1), highscore_(0)
-{ }
+{
+    id_ = next_id_++;
+}
 
 User::User(std::string name) : name_(name), age_(-1), highscore_(-1)
-{ }
+{
+    id_ = next_id_++;
+}
 
 User::User(std::string name, int age) : name_(name), age_(age), highscore_(-1)
-{ }
+{
+    id_ = next_id_++;
+}
 
 User::User(std::string name, int age, int highscore) :
     name_(name), age_(age), highscore_(highscore)
-{ }
+{
+    id_ = next_id_++;
+}
+
+long User::id()
+{
+    return id_;
+}
 
 std::string User::name()
 {
@@ -54,5 +69,5 @@ bool User::highscore(int new_score)
 
 bool User::operator==(const User& u)
 {
-    return name_ == u.name_;
+    return id_ == u.id_;
 }
