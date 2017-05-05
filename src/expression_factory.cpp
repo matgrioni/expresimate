@@ -17,7 +17,7 @@ Expression ExpressionFactory::create(int terms, int min, int max)
 
     int term;
     char op;
-    char prev_op = '/0';
+    char prev_op = '\0';
     std::stringstream ss;
     for (int i = 0; i < terms; i++)
     {

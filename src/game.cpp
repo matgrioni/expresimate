@@ -22,19 +22,19 @@ void Game::operator() ()
     do
     {
         std::cin >> number_of_players;
-    } while (number_of_players <= 0);
+    } while (number_of_players <= 0 || number_of_players > users.size());
 
     std::vector<User> chosen_users;
     std::vector<GameSession> sessions;
 
     std::cout << "Choose your user..." << std::endl;
 
-    for (int i = 1; i <= users.size(); i++)
+    for (std::vector<User>::size_type i = 1; i <= users.size(); i++)
         std::cout << i << ". " << users[i - 1].name() << std::endl;
 
     for (int i = 1; i <= number_of_players; i++)
     {
-        int user_idx;
+        std::vector<User>::size_type user_idx;
         do
         {
             std::cout << "Number for user " << i << " > ";
@@ -91,11 +91,13 @@ void Game::operator() ()
         else
             error = util::percent_error(guess, answer);
 
-        // The harder the problem is, the closer they are, and the
-        // less time they take, the more points they get.
+        // The harder the problem is, the closer they are, and the less time
+        // they take, the more points they get. Keep the point losing at most to
+        // -100.
         int diff = std::abs(((max + terms) * (PERCENT_ERROR - error) *
                             (TIME_ALLOWED - dur) / TIME_ALLOWED));
-        cur_session.score += diff;
+        if (diff < -100)
+            diff = -100;
 
         if (error < PERCENT_ERROR && dur < TIME_ALLOWED)
         {
@@ -138,7 +140,7 @@ void Game::operator() ()
     }
 
     std::cout << "Everybody's lost their chance!" << std::endl << std::endl;
-    for (int i = 0; i < sessions.size(); i++)
+    for (std::vector<GameSession>::size_type i = 0; i < sessions.size(); i++)
     {
         User n_u = chosen_users[i];
 

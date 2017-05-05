@@ -16,10 +16,10 @@ void RemoveUser::operator() ()
     if (users.size() > 0)
     {
         std::cout << std::endl << "Choose user to delete..." << std::endl;
-        for (int i = 1; i <= users.size(); i++)
+        for (std::vector<User>::size_type i = 1; i <= users.size(); i++)
             std::cout << i << ". " << users[i - 1].name() << std::endl;
 
-        int u_idx;
+        std::vector<User>::size_type u_idx;
         do
         {
             std::cout << "> ";

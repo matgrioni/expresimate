@@ -141,7 +141,7 @@ std::vector<std::string> DB<T>::parse(std::string line)
     std::vector<std::string> fields;
     std::stringstream ss;
 
-    for (int i = 0; i < line.length(); i++)
+    for (std::vector<std::string>::size_type i = 0; i < line.length(); i++)
     {
         char cur = line.at(i);
 

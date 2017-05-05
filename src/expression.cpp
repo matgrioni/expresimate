@@ -64,7 +64,7 @@ void Expression::parse_(std::string expr, BinaryTree<std::string>* tree)
     // ops[1] is for '*' and '/' operators.
     // ops[2] is for the '^' operator.
     int ops[] = { -1, -1, -1 };
-    int index = 0;
+    std::string::size_type index = 0;
     while(ops[0] < 0 && index < expr.length())
     {
         char cur = expr.at(index);
