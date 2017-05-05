@@ -1,10 +1,6 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include <vector>
-
-#include "user.hpp"
-
 typedef struct GameSession
 {
     GameSession() : lives(3), round(1), alive(true), score(0) { }

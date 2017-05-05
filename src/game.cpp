@@ -12,37 +12,32 @@
 
 void Game::operator() ()
 {
-    UserDB userDB("./data/users.dat");
+    UserDB userDB(util::USER_STORE);
     userDB.open();
 
     std::vector<User> users = userDB.all();
 
     int number_of_players;
-    std::cout << std::endl << "Number of players > ";
-    std::cin >> number_of_players;
+    std::cout << std::endl << "Number of players (>1) > ";
+    do
+    {
+        std::cin >> number_of_players;
+    } while (number_of_players <= 0);
 
     std::vector<User> chosen_users;
     std::vector<GameSession> sessions;
 
     std::cout << "Choose your user..." << std::endl;
 
-    // TODO:
-    int index = 1;
-    for (std::vector<User>::iterator iter = users.begin();
-         iter != users.end();
-         iter++)
-    {
-        std::cout << index << ". " << iter->name() << std::endl;
+    for (int i = 1; i <= users.size(); i++)
+        std::cout << i << ". " << users[i - 1].name() << std::endl;
 
-        index++;
-    }
-
-    for (int i = 0; i < number_of_players; i++)
+    for (int i = 1; i <= number_of_players; i++)
     {
         int user_idx;
         do
         {
-            std::cout << "Number for user " << i + 1 << " > ";
+            std::cout << "Number for user " << i << " > ";
             std::cin >> user_idx;
         }
         while (user_idx < 1 || user_idx > users.size());
@@ -84,7 +79,7 @@ void Game::operator() ()
         std::cin >> guess;
 
         auto end = std::chrono::system_clock::now();
-        float dur = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.f;
+        double dur = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.f;
         std::cout << "Took " << dur << " s" << std::endl;
 
         double answer = e.eval();
@@ -98,22 +93,23 @@ void Game::operator() ()
 
         // The harder the problem is, the closer they are, and the
         // less time they take, the more points they get.
-        int diff = std::abs((max + terms) * (PERCENT_ERROR - error) * ((TIME_ALLOWED - dur) / TIME_ALLOWED));
+        int diff = std::abs(((max + terms) * (PERCENT_ERROR - error) *
+                            (TIME_ALLOWED - dur) / TIME_ALLOWED));
+        cur_session.score += diff;
 
-        if (error < TIME_ALLOWED && dur < TIME_ALLOWED)
+        if (error < PERCENT_ERROR && dur < TIME_ALLOWED)
         {
             std::cout << "Good!" << std::endl;
 
             cur_session.round++;
-
             cur_session.score += diff;
             std::cout << "New score: " << cur_session.score << std::endl;
         }
         else
         {
             std::cout << "Sorry :(" << std::endl;
-            cur_session.lives--;
             cur_session.score -= diff;
+            cur_session.lives--;
 
             if (cur_session.lives <= 0)
             {
@@ -134,24 +130,25 @@ void Game::operator() ()
         }
         while (!sessions[turn].alive && players_checked < number_of_players);
 
+        // Once we break out of the loop, this means that we either checked
+        // through every game session and did not find another one left alive in
+        // which case the current user is not alive. Otherwise, we found a user
+        // whose turn it is and they are currently alive.
         one_alive = sessions[turn].alive;
     }
 
     std::cout << "Everybody's lost their chance!" << std::endl << std::endl;
-    // TODO: Reusing variable, find better way to iterate over vector
-    index = 0;
-    for (GameSession g : sessions)
+    for (int i = 0; i < sessions.size(); i++)
     {
-        User n_u = chosen_users[index];
+        User n_u = chosen_users[i];
 
-        bool best = n_u.highscore(g.score);
+        bool best = n_u.highscore(sessions[i].score);
         if (best)
         {
-            userDB.update(chosen_users[index], n_u);
-            std::cout << chosen_users[index].name() << " has a new highscore" << std::endl;
+            userDB.update(chosen_users[i], n_u);
+            std::cout << chosen_users[i].name() << " has a new highscore"
+                      << std::endl;
         }
-
-        index++;
     }
 
     userDB.commit();

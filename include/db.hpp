@@ -7,8 +7,6 @@
 #include <string>
 #include <vector>
 
-#include <iostream>
-
 // TODO: Can I separate interface from implementation here.
 
 template <class T>
@@ -20,6 +18,7 @@ class DB
         void open();
 
         std::vector<T> all() const;
+        int size() const;
 
         /* Basic operations on the database objects. remove and update return
            true if the operation changed the underlying data and false
@@ -80,6 +79,12 @@ template <class T>
 std::vector<T> DB<T>::all() const
 {
     return items_;
+}
+
+template <class T>
+int DB<T>::size() const
+{
+    return items_.size();
 }
 
 template <class T>
