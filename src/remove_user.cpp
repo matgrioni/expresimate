@@ -31,6 +31,6 @@ void RemoveUser::operator() ()
     }
     else
     {
-        std::cout << "There are no users to remove.";
+        std::cout << "There are no users to remove." << std::endl;
     }
 }

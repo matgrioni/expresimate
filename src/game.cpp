@@ -17,6 +17,12 @@ void Game::operator() ()
 
     std::vector<User> users = userDB.all();
 
+    if (users.size() == 0)
+    {
+        std::cout << "Create a user before starting a game." << std::endl;
+        return;
+    }
+
     int number_of_players;
     std::cout << std::endl << "Number of players (>1) > ";
     do
@@ -94,10 +100,8 @@ void Game::operator() ()
         // The harder the problem is, the closer they are, and the less time
         // they take, the more points they get. Keep the point losing at most to
         // -100.
-        int diff = std::abs(((max + terms) * (PERCENT_ERROR - error) *
-                            (TIME_ALLOWED - dur) / TIME_ALLOWED));
-        if (diff < -100)
-            diff = -100;
+        int diff = std::abs(((double) max + terms) * (PERCENT_ERROR - error) *
+                            (TIME_ALLOWED - dur) / TIME_ALLOWED);
 
         if (error < PERCENT_ERROR && dur < TIME_ALLOWED)
         {
@@ -109,6 +113,9 @@ void Game::operator() ()
         }
         else
         {
+            if (diff > 100)
+                diff = 100;
+
             std::cout << "Sorry :(" << std::endl;
             cur_session.score -= diff;
             cur_session.lives--;
