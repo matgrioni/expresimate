@@ -12,12 +12,15 @@
 class User
 {
     public:
-        User();
-        User(std::string name);
-        User(std::string name, int age);
-        User(std::string name, int age, int highscore);
+        User(long id);
+        User(long id, std::string name);
+        User(long id, std::string name, int age);
+        User(long id, std::string name, int age, int highscore);
+
+        static long genID();
 
         long id();
+        void id(long id);
 
         std::string name();
         void name(std::string new_name);

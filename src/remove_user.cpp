@@ -8,27 +8,29 @@
 
 void RemoveUser::operator() ()
 {
-    UserDB userDB("./data/users.dat");
+    UserDB userDB(util::USER_STORE);
     userDB.open();
 
     std::vector<User> users = userDB.all();
 
-    std::cout << std::endl << "Choose user to delete..." << std::endl;
-    int index = 1;
-    for (User u : users)
+    if (users.size() > 0)
     {
-        std::cout << index << ". " << u.name() << std::endl;
+        std::cout << std::endl << "Choose user to delete..." << std::endl;
+        for (int i = 1; i <= users.size(); i++)
+            std::cout << i << ". " << users[i - 1].name() << std::endl;
 
-        index++;
+        int u_idx;
+        do
+        {
+            std::cout << "> ";
+            std::cin >> u_idx;
+        } while (u_idx < 1 || u_idx > users.size());
+
+        userDB.remove(users[u_idx - 1]);
+        userDB.commit();
     }
-
-    int u_idx;
-    do
+    else
     {
-        std::cout << "> ";
-        std::cin >> u_idx;
-    } while (u_idx < 1 || u_idx > users.size());
-
-    userDB.remove(users[u_idx - 1]);
-    userDB.commit();
+        std::cout << "There are no users to remove.";
+    }
 }

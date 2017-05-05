@@ -5,25 +5,24 @@
 
 long User::next_id_ = 0;
 
-User::User() : name_(""), age_(-1), highscore_(0)
-{
-    id_ = next_id_++;
-}
+User::User(long id) : id_(id), name_(""), age_(-1), highscore_(0)
+{ }
 
-User::User(std::string name) : name_(name), age_(-1), highscore_(-1)
-{
-    id_ = next_id_++;
-}
+User::User(long id, std::string name) : id_(id), name_(name), age_(-1),
+    highscore_(-1)
+{ }
 
-User::User(std::string name, int age) : name_(name), age_(age), highscore_(-1)
-{
-    id_ = next_id_++;
-}
+User::User(long id, std::string name, int age) : id_(id), name_(name),
+    age_(age), highscore_(-1)
+{ }
 
-User::User(std::string name, int age, int highscore) :
-    name_(name), age_(age), highscore_(highscore)
+User::User(long id, std::string name, int age, int highscore) :
+    id_(id), name_(name), age_(age), highscore_(highscore)
+{ }
+
+long User::genID()
 {
-    id_ = next_id_++;
+    return next_id_++;
 }
 
 long User::id()
